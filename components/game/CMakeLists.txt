@@ -4,5 +4,6 @@ idf_component_register(SRCS
 "src/player.c"
 "src/kraken.c"
 "src/map.c"
+"src/board.c"
 INCLUDE_DIRS "" "inc"
 REQUIRES freertos)
