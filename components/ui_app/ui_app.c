@@ -191,7 +191,7 @@ void ui_app_init(void)
 
     // #elif CONFIG_UI_APP_SQUARELINE
     ui_init();
-    init();
+    //init();
     printf("APP: Squareline\n");
 
     // printf("VIMOSEEEEEEE\n");
