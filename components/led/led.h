@@ -85,7 +85,23 @@ led_err_t led_pattern_run(led_name_t led, led_pattern_t led_pattern, uint32_t ti
  * @return Status of pattern reseting.
  */
 led_err_t led_pattern_reset(led_name_t led);
+/**
+ * @brief The function turns LED on.
+ *
+ * @param [in] led LED instance (e.g. LED_BLUE).
+ *
+ * @return esp_err_t ESP_OK on success, fail otherwise.
+ */
+led_err_t led_on(led_name_t led);
 
+/**
+ * @brief The function turns LED off.
+ *
+ * @param [in] led LED instance (e.g. LED_BLUE).
+ *
+ * @return esp_err_t ESP_OK on success, fail otherwise.
+ */
+led_err_t led_off(led_name_t led);
 #ifdef __cplusplus
 }
 #endif
