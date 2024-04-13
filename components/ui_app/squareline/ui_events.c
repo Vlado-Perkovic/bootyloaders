@@ -283,7 +283,7 @@ static void _telemetry_timer_callback(TimerHandle_t p_timer)
              "{"
              "\"temp\":%d,"
              "\"hum\":%d,"
-             "\"acc\":[\"x\":%f,\"y\":%f,\"z\":%f]"
+             "\"acc\":{\"x\":%f,\"y\":%f,\"z\":%f}"
              "}",
              (int)temperature,
              (int)humidity,
