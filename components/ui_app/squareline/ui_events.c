@@ -87,3 +87,13 @@ void ui_setup(lv_event_t * e)
 }
 
 //---------------------------- INTERRUPT HANDLERS -----------------------------
+
+void start_provision(lv_event_t * e)
+{
+	// Your code here
+}
+
+void connect_to_wifi(lv_event_t * e)
+{
+	// Your code here
+}

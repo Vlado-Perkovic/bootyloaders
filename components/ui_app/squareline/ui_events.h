@@ -12,6 +12,8 @@ extern "C" {
 
 void ui_setup(lv_event_t * e);
 void btn1_clicked(lv_event_t * e);
+void start_provision(lv_event_t * e);
+void connect_to_wifi(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

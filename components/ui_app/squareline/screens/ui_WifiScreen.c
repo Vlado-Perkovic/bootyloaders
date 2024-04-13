@@ -10,5 +10,53 @@ void ui_WifiScreen_screen_init(void)
     ui_WifiScreen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_WifiScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
+    ui_background2 = lv_img_create(ui_WifiScreen);
+    lv_img_set_src(ui_background2, &ui_img_neptune_png);
+    lv_obj_set_width(ui_background2, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_background2, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_background2, 5);
+    lv_obj_set_y(ui_background2, -10);
+    lv_obj_set_align(ui_background2, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_background2, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
+    lv_obj_clear_flag(ui_background2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_img_set_zoom(ui_background2, 200);
+    lv_obj_set_style_bg_img_src(ui_background2, &ui_img_neptune_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Button8 = lv_btn_create(ui_WifiScreen);
+    lv_obj_set_width(ui_Button8, 115);
+    lv_obj_set_height(ui_Button8, 35);
+    lv_obj_set_x(ui_Button8, 95);
+    lv_obj_set_y(ui_Button8, -91);
+    lv_obj_set_align(ui_Button8, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button8, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button8, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_Button8, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Button8, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_WifiConnectButton = lv_btn_create(ui_WifiScreen);
+    lv_obj_set_width(ui_WifiConnectButton, 255);
+    lv_obj_set_height(ui_WifiConnectButton, 50);
+    lv_obj_set_x(ui_WifiConnectButton, 0);
+    lv_obj_set_y(ui_WifiConnectButton, 65);
+    lv_obj_set_align(ui_WifiConnectButton, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_WifiConnectButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_WifiConnectButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_WifiConnectButton, lv_color_hex(0x97939F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_WifiConnectButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Button11 = lv_btn_create(ui_WifiScreen);
+    lv_obj_set_width(ui_Button11, 100);
+    lv_obj_set_height(ui_Button11, 35);
+    lv_obj_set_x(ui_Button11, -104);
+    lv_obj_set_y(ui_Button11, -90);
+    lv_obj_set_align(ui_Button11, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button11, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button11, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_Button11, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_Button11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    lv_obj_add_event_cb(ui_Button8, ui_event_Button8, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_WifiConnectButton, ui_event_WifiConnectButton, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
 
 }
