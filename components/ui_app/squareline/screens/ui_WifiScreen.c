@@ -41,16 +41,26 @@ void ui_WifiScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_WifiConnectButton, lv_color_hex(0x97939F), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_WifiConnectButton, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Button11 = lv_btn_create(ui_WifiScreen);
-    lv_obj_set_width(ui_Button11, 100);
-    lv_obj_set_height(ui_Button11, 35);
-    lv_obj_set_x(ui_Button11, -104);
-    lv_obj_set_y(ui_Button11, -97);
-    lv_obj_set_align(ui_Button11, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button11, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button11, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_Button11, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_Button11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_BackHome = lv_btn_create(ui_WifiScreen);
+    lv_obj_set_width(ui_BackHome, 100);
+    lv_obj_set_height(ui_BackHome, 35);
+    lv_obj_set_x(ui_BackHome, -104);
+    lv_obj_set_y(ui_BackHome, -97);
+    lv_obj_set_align(ui_BackHome, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_BackHome, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_BackHome, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_set_style_bg_color(ui_BackHome, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_bg_opa(ui_BackHome, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_BackFromWifi = lv_label_create(ui_BackHome);
+    lv_obj_set_width(ui_BackFromWifi, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_BackFromWifi, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_BackFromWifi, -5);
+    lv_obj_set_y(ui_BackFromWifi, 1);
+    lv_obj_set_align(ui_BackFromWifi, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_BackFromWifi, "<   Back");
+    lv_obj_set_style_text_color(ui_BackFromWifi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
+    lv_obj_set_style_text_opa(ui_BackFromWifi, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_WIfiAvailability = lv_obj_create(ui_WifiScreen);
     lv_obj_set_width(ui_WIfiAvailability, 162);
@@ -60,19 +70,14 @@ void ui_WifiScreen_screen_init(void)
     lv_obj_set_align(ui_WIfiAvailability, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_WIfiAvailability, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_BackFromWifi = lv_label_create(ui_WifiScreen);
-    lv_obj_set_width(ui_BackFromWifi, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_BackFromWifi, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_BackFromWifi, -107);
-    lv_obj_set_y(ui_BackFromWifi, -97);
-    lv_obj_set_align(ui_BackFromWifi, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_BackFromWifi, "<   Back");
-    lv_obj_set_style_text_color(ui_BackFromWifi, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_BackFromWifi, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_WifiAvailability = lv_label_create(ui_WIfiAvailability);
+    lv_obj_set_width(ui_WifiAvailability, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_WifiAvailability, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_WifiAvailability, LV_ALIGN_CENTER);
 
     lv_obj_add_event_cb(ui_Button8, ui_event_Button8, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_WifiConnectButton, ui_event_WifiConnectButton, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_BackHome, ui_event_BackHome, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_WifiScreen, ui_event_WifiScreen, LV_EVENT_ALL, NULL);
 
 }

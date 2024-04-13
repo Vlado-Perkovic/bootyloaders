@@ -86,17 +86,17 @@ void ui_MeasurementsScreen_screen_init(void)
     lv_obj_set_style_text_color(ui_BackToHome, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_BackToHome, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Back = lv_label_create(ui_MeasurementsScreen);
+    ui_Back = lv_label_create(ui_BackToHome);
     lv_obj_set_width(ui_Back, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Back, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Back, -122);
-    lv_obj_set_y(ui_Back, -100);
+    lv_obj_set_x(ui_Back, -4);
+    lv_obj_set_y(ui_Back, 2);
     lv_obj_set_align(ui_Back, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Back, "<   Back");
     lv_obj_set_style_text_color(ui_Back, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_text_opa(ui_Back, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    lv_obj_add_event_cb(ui_BackToHome, ui_event_BackToHome, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Back, ui_event_Back, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_BackToHome, ui_event_BackToHome, LV_EVENT_ALL, NULL);
 
 }

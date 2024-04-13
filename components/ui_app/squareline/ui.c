@@ -34,10 +34,11 @@ void ui_event_Button8(lv_event_t * e);
 lv_obj_t * ui_Button8;
 void ui_event_WifiConnectButton(lv_event_t * e);
 lv_obj_t * ui_WifiConnectButton;
-void ui_event_Button11(lv_event_t * e);
-lv_obj_t * ui_Button11;
-lv_obj_t * ui_WIfiAvailability;
+void ui_event_BackHome(lv_event_t * e);
+lv_obj_t * ui_BackHome;
 lv_obj_t * ui_BackFromWifi;
+lv_obj_t * ui_WIfiAvailability;
+lv_obj_t * ui_WifiAvailability;
 
 
 // SCREEN: ui_MeasurementsScreen
@@ -127,7 +128,7 @@ void ui_event_WifiConnectButton(lv_event_t * e)
         connect_to_wifi(e);
     }
 }
-void ui_event_Button11(lv_event_t * e)
+void ui_event_BackHome(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);

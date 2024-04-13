@@ -9,6 +9,7 @@ idf_component_register(SRCS
 "squareline/screens/ui_MeasurementsScreen.c"
 "squareline/screens/ui_WifiScreen.c"
 "squareline/images/ui_img_1159460666.c"
+"squareline/images/ui_img_1049535237.c"
 INCLUDE_DIRS "" "squareline" "squareline/components"
 REQUIRES lvgl lvgl_esp32_drivers wifi game led button joystick telemetry sensor)
 

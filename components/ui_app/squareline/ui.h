@@ -38,10 +38,11 @@ void ui_event_Button8(lv_event_t * e);
 extern lv_obj_t * ui_Button8;
 void ui_event_WifiConnectButton(lv_event_t * e);
 extern lv_obj_t * ui_WifiConnectButton;
-void ui_event_Button11(lv_event_t * e);
-extern lv_obj_t * ui_Button11;
-extern lv_obj_t * ui_WIfiAvailability;
+void ui_event_BackHome(lv_event_t * e);
+extern lv_obj_t * ui_BackHome;
 extern lv_obj_t * ui_BackFromWifi;
+extern lv_obj_t * ui_WIfiAvailability;
+extern lv_obj_t * ui_WifiAvailability;
 // SCREEN: ui_MeasurementsScreen
 void ui_MeasurementsScreen_screen_init(void);
 extern lv_obj_t * ui_MeasurementsScreen;
@@ -67,6 +68,7 @@ extern lv_obj_t * ui____initial_actions0;
 
 
 LV_IMG_DECLARE(ui_img_1159460666);    // assets/neptune (1).png
+LV_IMG_DECLARE(ui_img_1049535237);    // assets/Neptune,_Earth_size_comparison (1).png
 
 
 
