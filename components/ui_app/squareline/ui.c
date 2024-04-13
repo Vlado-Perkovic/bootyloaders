@@ -34,6 +34,7 @@ void ui_event_WifiConnectButton(lv_event_t * e);
 lv_obj_t * ui_WifiConnectButton;
 void ui_event_BackHome(lv_event_t * e);
 lv_obj_t * ui_BackHome;
+lv_obj_t * ui_;
 lv_obj_t * ui_BackFromWifi;
 lv_obj_t * ui_WIfiAvailability;
 lv_obj_t * ui_WifiAvailability;
