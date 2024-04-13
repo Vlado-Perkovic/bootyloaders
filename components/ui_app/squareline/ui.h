@@ -60,7 +60,6 @@ extern lv_obj_t * ui_Back;
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
 extern lv_obj_t * ui_AlienTicTacToe;
-extern lv_obj_t * ui_neptuncina4;
 void ui_event_Button13(lv_event_t * e);
 extern lv_obj_t * ui_Button13;
 void ui_event____initial_actions0(lv_event_t * e);
