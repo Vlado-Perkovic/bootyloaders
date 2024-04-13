@@ -224,6 +224,35 @@ led_err_t led_pattern_reset(led_name_t led)
 
     return LED_ERR_NONE;
 }
+led_err_t led_on(led_name_t led)
+{
+    led_err_t esp_err = LED_ERR_NONE;
+    if(led < LED_COUNT)
+    {
+        /* Figure out if the LED will turn on after outputting 1 or 0. */
+        // uint32_t level = _led_info[led].b_is_active_on_high_level ? 1U : 0U;
+
+      led_gpio_on(_led_info[led].p_led);
+    }
+
+    return esp_err;
+}
+
+led_err_t led_off(led_name_t led)
+{
+    led_err_t esp_err = LED_ERR_NONE;
+
+    if(led < LED_COUNT)
+    {
+        /* Figure out if the LED will turn off after outputting 1 or 0. */
+        // uint32_t level = _led_info[led].b_is_active_on_high_level ? 0U : 1U;
+
+      led_gpio_off(_led_info[led].p_led);
+
+    }
+
+    return esp_err;
+}
 //---------------------------- PRIVATE FUNCTIONS ------------------------------
 static void _led_none_pattern_case(led_name_t led)
 {
