@@ -12,7 +12,7 @@
 // SCREEN: ui_IntroScreen
 void ui_IntroScreen_screen_init(void);
 lv_obj_t * ui_IntroScreen;
-lv_obj_t * ui_background;
+lv_obj_t * ui_neptuncina;
 void ui_event_ReadMeasurements(lv_event_t * e);
 lv_obj_t * ui_ReadMeasurements;
 void ui_event_Challenge(lv_event_t * e);
@@ -29,7 +29,7 @@ lv_obj_t * ui_Label9;
 void ui_WifiScreen_screen_init(void);
 void ui_event_WifiScreen(lv_event_t * e);
 lv_obj_t * ui_WifiScreen;
-lv_obj_t * ui_background2;
+lv_obj_t * ui_neptuncina2;
 void ui_event_Button8(lv_event_t * e);
 lv_obj_t * ui_Button8;
 void ui_event_WifiConnectButton(lv_event_t * e);
@@ -37,12 +37,13 @@ lv_obj_t * ui_WifiConnectButton;
 void ui_event_Button11(lv_event_t * e);
 lv_obj_t * ui_Button11;
 lv_obj_t * ui_WIfiAvailability;
+lv_obj_t * ui_BackFromWifi;
 
 
 // SCREEN: ui_MeasurementsScreen
 void ui_MeasurementsScreen_screen_init(void);
 lv_obj_t * ui_MeasurementsScreen;
-lv_obj_t * ui_background3;
+lv_obj_t * ui_neptuncina3;
 lv_obj_t * ui_TempSensing;
 lv_obj_t * ui_HumSensing;
 lv_obj_t * ui_AccSensing;
@@ -58,7 +59,7 @@ lv_obj_t * ui_Back;
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
 lv_obj_t * ui_AlienTicTacToe;
-lv_obj_t * ui_background4;
+lv_obj_t * ui_neptuncina4;
 void ui_event_Button13(lv_event_t * e);
 lv_obj_t * ui_Button13;
 void ui_event____initial_actions0(lv_event_t * e);

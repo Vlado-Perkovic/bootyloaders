@@ -3,90 +3,22 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project
 
-
-
 #include "ui.h"
-#include "wifi.h"
-#include "telemetry.h"
-#include "led.h"
-#include "button.h"
-#include "joystick.h"
-#include "game_engine.h"
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
 
-#include "math.h"
-#include <string.h>
-
-//---------------------------------- MACROS -----------------------------------
-
-#define MAIN_THREAD_STACK_SIZE   (4096u)
-#define MAIN_THREAD_PRIORITY     (5u)
-#define BUTTON_THREAD_STACK_SIZE (1024U)
-#define BUTTON_THREAD_PRIORITY   (5u)
-
-#define TELEMETRY_PERIOD_MS (5000)
-
-#define NO_TIMEOUT (UINT_MAX)
-
-#define BUTTON_QUEUE_LEN (10u)
-
-#define GRID_OFFSET       (20)
-#define GRID_SCALE        (5)
-#define MAP_OFFSET_X_AXIS (-163)
-#define MAP_OFFSET_Y_AXIS (-118)
-//------------------------- STATIC DATA & CONSTANTS ---------------------------
-
-
-
-// -----------------------Private Function Definitions-----------------------
-/**
- * @brief private function for the main task
- *
- * It deals with all the logic handling, interrupts send signals
- * through a queue which this task handles appropriately
- */
-static void _main_task();
-
-// -----------------------Private Functions---------------------------------
-static void _main_task()
+void ui_setup(lv_event_t * e)
 {
-    for(;;)
-    {
-        vTaskDelay(100 / portTICK_PERIOD_MS);
-    }
+	// Your code here
 }
 
 void btn1_clicked(lv_event_t * e)
 {
-    led_pattern_run(LED_BLUE, LED_PATTERN_SLOWBLINK, 5000);
+	// Your code here
 }
 
-
-void ui_setup(lv_event_t * e)
+void ui_events_is_wifi_available(lv_event_t * e)
 {
-    /* SETUP ALL LEDS */
-    if((LED_ERR_NONE != led_init(LED_RED)) || (LED_ERR_NONE != led_init(LED_GREEN)) || (LED_ERR_NONE != led_init(LED_BLUE)))
-    {
-        printf("An error has occured with led init.\n");
-    }
-
-    /* SETUP JOYSTICK */
-    if((JOYSTICK_ERR_NONE != joystick_init(JOYSTICK_1)))
-    {
-        printf("An error has occured with joystick init.\n");
-    }
-
-    /* CREATE MAIN TASK */
-    if(pdPASS != xTaskCreate(&_main_task, "main task", MAIN_THREAD_STACK_SIZE, NULL, MAIN_THREAD_PRIORITY, NULL))
-    {
-        printf("Creation of user interface task failed.\n");
-    }
-
-    printf("ui setup done!\n");
+	// Your code here
 }
-
-//---------------------------- INTERRUPT HANDLERS -----------------------------
 
 void start_provision(lv_event_t * e)
 {
@@ -94,11 +26,6 @@ void start_provision(lv_event_t * e)
 }
 
 void connect_to_wifi(lv_event_t * e)
-{
-	// Your code here
-}
-
-void ui_events_is_wifi_available(lv_event_t * e)
 {
 	// Your code here
 }

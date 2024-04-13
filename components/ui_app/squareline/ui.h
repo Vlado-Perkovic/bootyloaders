@@ -18,7 +18,7 @@ extern "C" {
 // SCREEN: ui_IntroScreen
 void ui_IntroScreen_screen_init(void);
 extern lv_obj_t * ui_IntroScreen;
-extern lv_obj_t * ui_background;
+extern lv_obj_t * ui_neptuncina;
 void ui_event_ReadMeasurements(lv_event_t * e);
 extern lv_obj_t * ui_ReadMeasurements;
 void ui_event_Challenge(lv_event_t * e);
@@ -33,7 +33,7 @@ extern lv_obj_t * ui_Label9;
 void ui_WifiScreen_screen_init(void);
 void ui_event_WifiScreen(lv_event_t * e);
 extern lv_obj_t * ui_WifiScreen;
-extern lv_obj_t * ui_background2;
+extern lv_obj_t * ui_neptuncina2;
 void ui_event_Button8(lv_event_t * e);
 extern lv_obj_t * ui_Button8;
 void ui_event_WifiConnectButton(lv_event_t * e);
@@ -41,10 +41,11 @@ extern lv_obj_t * ui_WifiConnectButton;
 void ui_event_Button11(lv_event_t * e);
 extern lv_obj_t * ui_Button11;
 extern lv_obj_t * ui_WIfiAvailability;
+extern lv_obj_t * ui_BackFromWifi;
 // SCREEN: ui_MeasurementsScreen
 void ui_MeasurementsScreen_screen_init(void);
 extern lv_obj_t * ui_MeasurementsScreen;
-extern lv_obj_t * ui_background3;
+extern lv_obj_t * ui_neptuncina3;
 extern lv_obj_t * ui_TempSensing;
 extern lv_obj_t * ui_HumSensing;
 extern lv_obj_t * ui_AccSensing;
@@ -58,14 +59,14 @@ extern lv_obj_t * ui_Back;
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
 extern lv_obj_t * ui_AlienTicTacToe;
-extern lv_obj_t * ui_background4;
+extern lv_obj_t * ui_neptuncina4;
 void ui_event_Button13(lv_event_t * e);
 extern lv_obj_t * ui_Button13;
 void ui_event____initial_actions0(lv_event_t * e);
 extern lv_obj_t * ui____initial_actions0;
 
 
-LV_IMG_DECLARE(ui_img_neptune_png);    // assets/neptune.png
+LV_IMG_DECLARE(ui_img_1159460666);    // assets/neptune (1).png
 
 
 

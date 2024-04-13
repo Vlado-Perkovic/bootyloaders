@@ -10,17 +10,14 @@ void ui_AlienTicTacToe_screen_init(void)
     ui_AlienTicTacToe = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_AlienTicTacToe, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_background4 = lv_img_create(ui_AlienTicTacToe);
-    lv_img_set_src(ui_background4, &ui_img_neptune_png);
-    lv_obj_set_width(ui_background4, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_background4, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_background4, 5);
-    lv_obj_set_y(ui_background4, -10);
-    lv_obj_set_align(ui_background4, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_background4, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_clear_flag(ui_background4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_img_set_zoom(ui_background4, 200);
-    lv_obj_set_style_bg_img_src(ui_background4, &ui_img_neptune_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_neptuncina4 = lv_img_create(ui_AlienTicTacToe);
+    lv_img_set_src(ui_neptuncina4, &ui_img_1159460666);
+    lv_obj_set_width(ui_neptuncina4, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_neptuncina4, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_neptuncina4, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_neptuncina4, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
+    lv_obj_clear_flag(ui_neptuncina4, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_img_set_zoom(ui_neptuncina4, 600);
 
     ui_Button13 = lv_btn_create(ui_AlienTicTacToe);
     lv_obj_set_width(ui_Button13, 100);
