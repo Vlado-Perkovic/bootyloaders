@@ -15,8 +15,8 @@
 #include "freertos/timers.h"
 
 //---------------------------------- MACROS -----------------------------------
-#define FASTBLINK_MS (100U)
-#define SLOWBLINK_MS (1000U)
+#define FASTBLINK_MS (200U)
+#define SLOWBLINK_MS (800U)
 
 #define LED_TIMER_RESET(timer_hndl)  \
     do                               \
@@ -151,6 +151,31 @@ led_err_t led_init(led_name_t led)
 
     return LED_ERR_NONE;
 }
+
+led_err_t led_on(led_name_t led)
+{
+    led_err_t led_err = LED_ERR_NONE;
+
+    if(led < LED_COUNT)
+    {
+        led_gpio_on(_led_info[led].p_led);
+    }
+
+    return led_err;
+}
+
+led_err_t led_off(led_name_t led)
+{
+    led_err_t led_err = LED_ERR_NONE;
+
+    if(led < LED_COUNT)
+    {
+        led_gpio_off(_led_info[led].p_led);
+    }
+
+    return led_err;
+}
+
 
 led_err_t led_pattern_run(led_name_t led, led_pattern_t led_pattern, uint32_t timeout_ms)
 {

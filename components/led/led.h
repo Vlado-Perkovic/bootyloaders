@@ -64,6 +64,23 @@ typedef enum
  * @return Status of initialization.
  */
 led_err_t led_init(led_name_t led);
+/**
+ * @brief Init LED driver and configure all needed functionalities.
+ *
+ * @param [in] led - Name of the LED to be initialized.
+ *
+ * @return Status of initialization.
+ */
+led_err_t led_on(led_name_t led);
+
+/**
+ * @brief Init LED driver and configure all needed functionalities.
+ *
+ * @param [in] led - Name of the LED to be initialized.
+ *
+ * @return Status of initialization.
+ */
+led_err_t led_off(led_name_t led);
 
 /**
  * @brief Set led pattern.
