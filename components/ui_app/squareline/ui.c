@@ -12,20 +12,28 @@
 // SCREEN: ui_IntroScreen
 void ui_IntroScreen_screen_init(void);
 lv_obj_t * ui_IntroScreen;
+lv_obj_t * ui_background;
 void ui_event_ReadMeasurements(lv_event_t * e);
 lv_obj_t * ui_ReadMeasurements;
+void ui_event_Challenge(lv_event_t * e);
 lv_obj_t * ui_Challenge;
+void ui_event_WifiSettings(lv_event_t * e);
 lv_obj_t * ui_WifiSettings;
+
+
+// SCREEN: ui_WifiScreen
+void ui_WifiScreen_screen_init(void);
+lv_obj_t * ui_WifiScreen;
+
+
+// SCREEN: ui_MeasurementsScreen
+void ui_MeasurementsScreen_screen_init(void);
+lv_obj_t * ui_MeasurementsScreen;
 
 
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
 lv_obj_t * ui_AlienTicTacToe;
-void ui_event_ReadMeasurements1(lv_event_t * e);
-lv_obj_t * ui_ReadMeasurements1;
-void ui_event_Challenge1(lv_event_t * e);
-lv_obj_t * ui_Challenge1;
-lv_obj_t * ui_WifiSettings1;
 void ui_event____initial_actions0(lv_event_t * e);
 lv_obj_t * ui____initial_actions0;
 
@@ -47,21 +55,24 @@ void ui_event_ReadMeasurements(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         btn1_clicked(e);
     }
-}
-void ui_event_ReadMeasurements1(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-    lv_obj_t * target = lv_event_get_target(e);
-    if(event_code == LV_EVENT_CLICKED) {
-        btn1_clicked(e);
+    if(event_code == LV_EVENT_PRESSED) {
+        _ui_screen_change(&ui_MeasurementsScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_MeasurementsScreen_screen_init);
     }
 }
-void ui_event_Challenge1(lv_event_t * e)
+void ui_event_Challenge(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_PRESSED) {
         _ui_screen_change(&ui_AlienTicTacToe, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_AlienTicTacToe_screen_init);
+    }
+}
+void ui_event_WifiSettings(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_PRESSED) {
+        _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
     }
 }
 void ui_event____initial_actions0(lv_event_t * e)
@@ -82,6 +93,8 @@ void ui_init(void)
                                                false, LV_FONT_DEFAULT);
     lv_disp_set_theme(dispp, theme);
     ui_IntroScreen_screen_init();
+    ui_WifiScreen_screen_init();
+    ui_MeasurementsScreen_screen_init();
     ui_AlienTicTacToe_screen_init();
     ui____initial_actions0 = lv_obj_create(NULL);
     lv_obj_add_event_cb(ui____initial_actions0, ui_event____initial_actions0, LV_EVENT_ALL, NULL);

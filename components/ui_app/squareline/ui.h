@@ -18,22 +18,27 @@ extern "C" {
 // SCREEN: ui_IntroScreen
 void ui_IntroScreen_screen_init(void);
 extern lv_obj_t * ui_IntroScreen;
+extern lv_obj_t * ui_background;
 void ui_event_ReadMeasurements(lv_event_t * e);
 extern lv_obj_t * ui_ReadMeasurements;
+void ui_event_Challenge(lv_event_t * e);
 extern lv_obj_t * ui_Challenge;
+void ui_event_WifiSettings(lv_event_t * e);
 extern lv_obj_t * ui_WifiSettings;
+// SCREEN: ui_WifiScreen
+void ui_WifiScreen_screen_init(void);
+extern lv_obj_t * ui_WifiScreen;
+// SCREEN: ui_MeasurementsScreen
+void ui_MeasurementsScreen_screen_init(void);
+extern lv_obj_t * ui_MeasurementsScreen;
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
 extern lv_obj_t * ui_AlienTicTacToe;
-void ui_event_ReadMeasurements1(lv_event_t * e);
-extern lv_obj_t * ui_ReadMeasurements1;
-void ui_event_Challenge1(lv_event_t * e);
-extern lv_obj_t * ui_Challenge1;
-extern lv_obj_t * ui_WifiSettings1;
 void ui_event____initial_actions0(lv_event_t * e);
 extern lv_obj_t * ui____initial_actions0;
 
 
+LV_IMG_DECLARE(ui_img_neptune_png);    // assets/neptune.png
 
 
 

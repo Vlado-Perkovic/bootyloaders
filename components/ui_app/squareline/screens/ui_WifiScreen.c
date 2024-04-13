@@ -5,10 +5,10 @@
 
 #include "../ui.h"
 
-void ui_AlienTicTacToe_screen_init(void)
+void ui_WifiScreen_screen_init(void)
 {
-    ui_AlienTicTacToe = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_AlienTicTacToe, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_WifiScreen = lv_obj_create(NULL);
+    lv_obj_clear_flag(ui_WifiScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
 
 }
