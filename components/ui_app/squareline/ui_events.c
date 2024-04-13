@@ -97,3 +97,8 @@ void connect_to_wifi(lv_event_t * e)
 {
 	// Your code here
 }
+
+void ui_events_is_wifi_available(lv_event_t * e)
+{
+	// Your code here
+}

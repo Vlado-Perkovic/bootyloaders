@@ -27,6 +27,7 @@ lv_obj_t * ui_Label9;
 
 // SCREEN: ui_WifiScreen
 void ui_WifiScreen_screen_init(void);
+void ui_event_WifiScreen(lv_event_t * e);
 lv_obj_t * ui_WifiScreen;
 lv_obj_t * ui_background2;
 void ui_event_Button8(lv_event_t * e);
@@ -35,6 +36,7 @@ void ui_event_WifiConnectButton(lv_event_t * e);
 lv_obj_t * ui_WifiConnectButton;
 void ui_event_Button11(lv_event_t * e);
 lv_obj_t * ui_Button11;
+lv_obj_t * ui_WIfiAvailability;
 
 
 // SCREEN: ui_MeasurementsScreen
@@ -98,6 +100,14 @@ void ui_event_WifiSettings(lv_event_t * e)
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_WifiScreen, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_WifiScreen_screen_init);
+    }
+}
+void ui_event_WifiScreen(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_SCREEN_LOAD_START) {
+        ui_events_is_wifi_available(e);
     }
 }
 void ui_event_Button8(lv_event_t * e)

@@ -55,8 +55,17 @@ void ui_WifiScreen_screen_init(void)
     lv_obj_set_style_bg_color(ui_Button11, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
     lv_obj_set_style_bg_opa(ui_Button11, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
 
+    ui_WIfiAvailability = lv_obj_create(ui_WifiScreen);
+    lv_obj_set_width(ui_WIfiAvailability, 162);
+    lv_obj_set_height(ui_WIfiAvailability, 50);
+    lv_obj_set_x(ui_WIfiAvailability, 4);
+    lv_obj_set_y(ui_WIfiAvailability, -15);
+    lv_obj_set_align(ui_WIfiAvailability, LV_ALIGN_CENTER);
+    lv_obj_clear_flag(ui_WIfiAvailability, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
     lv_obj_add_event_cb(ui_Button8, ui_event_Button8, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_WifiConnectButton, ui_event_WifiConnectButton, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_WifiScreen, ui_event_WifiScreen, LV_EVENT_ALL, NULL);
 
 }

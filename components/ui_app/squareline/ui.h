@@ -31,6 +31,7 @@ extern lv_obj_t * ui_Fight_an_Alien;
 extern lv_obj_t * ui_Label9;
 // SCREEN: ui_WifiScreen
 void ui_WifiScreen_screen_init(void);
+void ui_event_WifiScreen(lv_event_t * e);
 extern lv_obj_t * ui_WifiScreen;
 extern lv_obj_t * ui_background2;
 void ui_event_Button8(lv_event_t * e);
@@ -39,6 +40,7 @@ void ui_event_WifiConnectButton(lv_event_t * e);
 extern lv_obj_t * ui_WifiConnectButton;
 void ui_event_Button11(lv_event_t * e);
 extern lv_obj_t * ui_Button11;
+extern lv_obj_t * ui_WIfiAvailability;
 // SCREEN: ui_MeasurementsScreen
 void ui_MeasurementsScreen_screen_init(void);
 extern lv_obj_t * ui_MeasurementsScreen;
