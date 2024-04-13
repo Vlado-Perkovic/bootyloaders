@@ -65,7 +65,7 @@ void ui_WifiScreen_screen_init(void)
     ui_WIfiAvailability = lv_obj_create(ui_WifiScreen);
     lv_obj_set_width(ui_WIfiAvailability, 162);
     lv_obj_set_height(ui_WIfiAvailability, 50);
-    lv_obj_set_x(ui_WIfiAvailability, 4);
+    lv_obj_set_x(ui_WIfiAvailability, 3);
     lv_obj_set_y(ui_WIfiAvailability, -15);
     lv_obj_set_align(ui_WIfiAvailability, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_WIfiAvailability, LV_OBJ_FLAG_SCROLLABLE);      /// Flags

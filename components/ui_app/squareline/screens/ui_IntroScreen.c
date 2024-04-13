@@ -11,13 +11,13 @@ void ui_IntroScreen_screen_init(void)
     lv_obj_clear_flag(ui_IntroScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_neptuncina = lv_img_create(ui_IntroScreen);
-    lv_img_set_src(ui_neptuncina, &ui_img_1049535237);
+    lv_img_set_src(ui_neptuncina, &ui_img_1159460666);
     lv_obj_set_width(ui_neptuncina, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_neptuncina, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_align(ui_neptuncina, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_neptuncina, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_clear_flag(ui_neptuncina, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_img_set_zoom(ui_neptuncina, 400);
+    lv_img_set_zoom(ui_neptuncina, 600);
 
     ui_ReadMeasurements = lv_btn_create(ui_IntroScreen);
     lv_obj_set_width(ui_ReadMeasurements, 125);

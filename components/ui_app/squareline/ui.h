@@ -68,7 +68,6 @@ extern lv_obj_t * ui____initial_actions0;
 
 
 LV_IMG_DECLARE(ui_img_1159460666);    // assets/neptune (1).png
-LV_IMG_DECLARE(ui_img_1049535237);    // assets/Neptune,_Earth_size_comparison (1).png
 
 
 
