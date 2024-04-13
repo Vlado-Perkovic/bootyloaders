@@ -31,8 +31,8 @@
 
 //---------------------------------- MACROS -----------------------------------
 #define BROKER     "mqtt://4gpc.l.time4vps.cloud"
-#define TOPIC      "kraken_location"
-#define TOPIC_SEND "submarine_status/vlado"
+#define TOPIC      ""
+#define TOPIC_SEND "WES/Neptune/sensors"
 //-------------------------------- DATA TYPES ---------------------------------
 
 //---------------------- PRIVATE FUNCTION PROTOTYPES --------------------------

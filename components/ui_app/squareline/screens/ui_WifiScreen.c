@@ -10,18 +10,6 @@ void ui_WifiScreen_screen_init(void)
     ui_WifiScreen = lv_obj_create(NULL);
     lv_obj_clear_flag(ui_WifiScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-<<<<<<< HEAD
-=======
-    ui_neptuncina2 = lv_img_create(ui_WifiScreen);
-    lv_img_set_src(ui_neptuncina2, &ui_img_1049535237);
-    lv_obj_set_width(ui_neptuncina2, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_neptuncina2, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_neptuncina2, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_neptuncina2, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
-    lv_obj_clear_flag(ui_neptuncina2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_img_set_zoom(ui_neptuncina2, 600);
-
->>>>>>> a1c54b8 (wifi)
     ui_Button8 = lv_btn_create(ui_WifiScreen);
     lv_obj_set_width(ui_Button8, 115);
     lv_obj_set_height(ui_Button8, 35);

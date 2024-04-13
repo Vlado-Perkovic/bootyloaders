@@ -13,6 +13,8 @@
 #include "game_engine.h"
 #include "math.h"
 #include <string.h>
+#include "sht3x.h"
+#include "esp_log.h"
 
 //---------------------------------- MACROS -----------------------------------
 
@@ -31,6 +33,13 @@
 #define GRID_SCALE        (5)
 #define MAP_OFFSET_X_AXIS (-163)
 #define MAP_OFFSET_Y_AXIS (-118)
+
+#define UART_STACK_SIZE             (4096)
+
+static const char *MAIN_TAG = "main";
+static const char *SENSORS_TAG = "sensors";
+
+char scale = SCALE_CELCIUS;
 //------------------------- STATIC DATA & CONSTANTS ---------------------------
 static QueueHandle_t  p_button_queue    = NULL;
 static game_engine_t *p_game            = NULL;
@@ -40,6 +49,8 @@ static bool           b_is_provisioning = false;
 static bool           b_is_light_on     = false;
 static TimerHandle_t  p_telemetry_timer = NULL;
 static char           json[100];
+float temperature = 0.0;
+float humidity = 0.0;
 
 //------------------------------- GLOBAL DATA ---------------------------------
 // extern QueueHandle_t p_game_event_queue;
@@ -95,9 +106,59 @@ void wifi_on_status_change_callback(wifi_connection_status_t new_status)
 
 static void _main_task()
 {
-	// Your code here
+    
+	i2c_config_t i2c_config = {
+        .mode = I2C_MODE_MASTER,
+        .sda_io_num = I2C_MASTER_SDA,
+        .sda_pullup_en = GPIO_PULLUP_ENABLE,
+        .scl_io_num = I2C_MASTER_SCL,
+        .scl_pullup_en = GPIO_PULLUP_ENABLE,
+        .master.clk_speed = I2C_MASTER_FREQ_HZ
+    };
+
+    ESP_ERROR_CHECK(i2c_param_config(I2C_MASTER_NUM, &i2c_config));
+    ESP_ERROR_CHECK(i2c_driver_install(I2C_MASTER_NUM, i2c_config.mode,
+                    I2C_MASTER_RX_BUF_DISABLE, I2C_MASTER_TX_BUF_DISABLE, 0));
+
+    esp_log_level_set(SENSORS_TAG, ESP_LOG_INFO);
+
+    #if defined(SENSORS_SCALE_F)
+    scale = SCALE_FAHRENHEIT;
+    #elif defined(SENSORS_SCALE_K)
+    scale = SCALE_KELVIN;
+    #endif
+
+    vTaskDelay(100 / portTICK_PERIOD_MS);
+
     for(;;) {
-        vTaskDelay(10 / portTICK_PERIOD_MS);
+        sht3x_start_periodic_measurement();
+
+        sht3x_sensors_values_t sensors_values = {
+            .temperature = 0x00,
+            .humidity = 0x00
+        };
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+
+        if(sht3x_read_measurement(&sensors_values) != ESP_OK) {
+            ESP_LOGE(SENSORS_TAG, "Sensors read measurement error!");
+        }
+        vTaskDelay(100 / portTICK_PERIOD_MS);
+
+        temperature = sensors_values.temperature;
+        humidity = sensors_values.humidity;
+
+        #if defined(SENSORS_SCALE_F)
+        temperature = FAHRENHEIT(temperature);
+        #elif defined(SENSORS_SCALE_K)
+        temperature = KELVIN(temperature);
+        #endif
+
+        ESP_LOG_BUFFER_HEX_LEVEL(SENSORS_TAG, &sensors_values, sizeof(sensors_values), ESP_LOG_DEBUG);
+
+        sht3x_stop_periodic_measurement();
+
+        ESP_LOGI(SENSORS_TAG, "Temperature %2.1f °%c - Humidity %2.1f%%", temperature, scale, humidity);
+        vTaskDelay(5000 / portTICK_PERIOD_MS);
     }
 }
 
@@ -211,26 +272,23 @@ static void _telemetry_timer_callback(TimerHandle_t p_timer)
 {
 
     /* Timer formats and sends the current location and diver name to the basecamp */
-    // const char *name = "Vlado";
-    // uint8_t     x    = 0;
-    // uint8_t     y    = 0;
-    // if(NULL != p_game)
-    // {
-    //     x = p_game->map.player_x;
-    //     y = p_game->map.player_y;
-    // }
-    // // Format JSON using snprintf
-    // snprintf(json,
-    //          sizeof(json),
-    //          "{"
-    //          "  \"temp\": %d,"
-    //          "  \"hum\": %d,"
-    //          "  \"acc\": [\"x\": %f, \"y\": %f, \"z\": %f]"
-    //          "}",
-    //          temp,
-    //          hum,
-    //          x, y, z);
-    // telemetry_connection_status_update(json);
+    const char *name = "Vlado";
+    float     x    = 69.0;
+    float     y    = 69.0;
+    float     z    = 69.0;
+
+    // Format JSON using snprintf
+    snprintf(json,
+             sizeof(json),
+             "{"
+             "\"temp\":%d,"
+             "\"hum\":%d,"
+             "\"acc\":[\"x\":%f,\"y\":%f,\"z\":%f]"
+             "}",
+             (int)temperature,
+             (int)humidity,
+             x, y, z);
+    telemetry_connection_status_update(json);
 }
 
 static void _telemetry_server_callback(const char *p_msg)
