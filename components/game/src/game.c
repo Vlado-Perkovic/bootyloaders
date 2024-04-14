@@ -82,15 +82,6 @@ game_t *game_new()
 void game_start(game_t *p_self)
 {
 
-    // /* start game loop timer */
-    // if(NULL != p_game_loop_timer)
-    // {
-    //     if(pdPASS != xTimerStart(p_game_loop_timer, 0))
-    //     {
-    //         printf("The timer could not be set into the Active state.\n");
-    //     }
-    // }
-
     /* create a task for game loop */
     if(NULL == p_task_game_loop_hndl)
     {
@@ -105,7 +96,6 @@ void game_start(game_t *p_self)
         if((NULL == p_task_game_loop_hndl) || (pdPASS != task_ret_val))
         {
             /* error code here */
-            printf("task creation failed.\n");
         }
     }
 
@@ -119,30 +109,27 @@ bool check_if_end(game_t *p_self) {
     for (int i = 0; i < 3; i++) {
         if ((p_self->board.pos[i + 3 * 0] == 1 && p_self->board.pos[i + 3 * 1] == 1 && p_self->board.pos[i + 3 * 2] == 1) ||
             (p_self->board.pos[0 + 3 * i] == 1 && p_self->board.pos[1 + 3 * i] == 1 && p_self->board.pos[2 + 3 * i] == 1)) {
-            printf("ravno\n");
             return true;
         }
 
         if ((p_self->board.pos[i + 3 * 0] == 0 && p_self->board.pos[i + 3 * 1] == 0 && p_self->board.pos[i + 3 * 2] == 0) ||
             (p_self->board.pos[0 + 3 * i] == 0 && p_self->board.pos[1 + 3 * i] == 0 && p_self->board.pos[2 + 3 * i] == 0)) {
-            printf("ravno\n");
             return true;
         }
     }
     
     if ((p_self->board.pos[0] == 1 && p_self->board.pos[4] == 1 && p_self->board.pos[8] == 1) ||
         (p_self->board.pos[2] == 1 && p_self->board.pos[4] == 1 && p_self->board.pos[6] == 1)) {
-        printf("dijagonala\n");
+
         return true;
     }
 
     if ((p_self->board.pos[0] == 0 && p_self->board.pos[4] == 0 && p_self->board.pos[8] == 0) ||
         (p_self->board.pos[2] == 0 && p_self->board.pos[4] == 0 && p_self->board.pos[6] == 0)) {
-        printf("dijagonala\n");
+
         return true;
     }
-    
-    printf("nope\n");
+
     return false;
 
 }
@@ -162,18 +149,19 @@ void game_delete(game_t *p_self)
     {
         return;
     }
+
+    for (int i = 0; i < 9; i++) {
+        p_self->board.pos[i] = -1;
+    }
     free(p_self);
     p_self = NULL;
 
     vTaskDelete(p_task_game_loop_hndl);
     p_task_game_loop_hndl = NULL;
-    // xTimerStop(p_game_loop_timer, 0);
-    // xTimerDelete(p_game_loop_timer, 0);
-    // p_game_loop_timer = NULL;
+ 
     vQueueDelete(p_game_event_queue);
     p_game_event_queue = NULL;
-    // vQueueDelete(p_map_queue);
-    // p_map_queue = NULL;
+ 
     vQueueDelete(p_game_state_queue);
     p_game_state_queue = NULL;
 }
@@ -195,20 +183,9 @@ bool _game_init(game_t *p_self)
     // Check if queue game_event_t is created successfully.
     if(NULL == p_game_event_queue)
     {
-        printf("Queue error handler.\n");
         b_is_valid_init = false;
     }
 
-    // /* CREATE MAP QUEUE */
-    // if((NULL == p_map_queue))
-    // {
-    //     p_map_queue = xQueueCreate(MAP_QUEUE_LEN, sizeof(game_map_t));
-
-    //     if(NULL == p_map_queue)
-    //     {
-    //         printf("Creation of map queue failed.\n");
-    //     }
-    // }
 
     /* CREATE GAME STATE QUEUE */
     if((NULL == p_game_state_queue))
@@ -217,25 +194,9 @@ bool _game_init(game_t *p_self)
 
         if(NULL == p_game_state_queue)
         {
-            printf("Creation of game state queue failed.\n");
         }
     }
 
-    // /* create a game timer */
-    // if((NULL == p_game_loop_timer) && (true == b_is_valid_init))
-    // {
-    //     p_game_loop_timer = xTimerCreate("game_loop_timer",
-    //                                      (GAME_LOOP_TIMER_PERIOD_MS / portTICK_PERIOD_MS),
-    //                                      pdTRUE,
-    //                                      p_self,
-    //                                      (TimerCallbackFunction_t)_game_loop_timer_callback);
-
-    //     if(NULL == p_game_loop_timer)
-    //     {
-    //         printf("Handle timer creation error..\n");
-    //         b_is_valid_init = false;
-    //     }
-    // }
 
     board_init(&p_self->board);
     return b_is_valid_init;
@@ -261,30 +222,15 @@ void _game_loop_task(void *p_argument)
             check_if_end(p_self);
         }
 
-
-        // vTaskDelay(10 / portTICK_PERIOD_MS);
     }
 }
 
-
-// static void _game_loop_timer_callback(TimerHandle_t p_timer)
-// {
-//     game_t *p_self = (game_t *)pvTimerGetTimerID(p_timer);
-
-
-//     // /* render with every timer count */
-//     if(xQueueSend(p_map_queue, (void *)&p_self->map, (TickType_t)0) != pdPASS)
-//     {
-//         /* Failed to post the message */
-//     }
-// }
 
 static void _game_state_send(game_state_t state)
 {
     if(xQueueSend(p_game_state_queue, (void *)&state, (TickType_t)0) != pdPASS)
     {
         /* Failed to post the message */
-        printf("Failed to send the game state\n");
     }
 }
 //---------------------------- INTERRUPT HANDLERS -----------------------------

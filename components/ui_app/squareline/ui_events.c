@@ -37,6 +37,8 @@
 
 #define UART_STACK_SIZE (4096)
 
+#define JSON_OFFSET (28)
+
 static const char *MAIN_TAG    = "main";
 static const char *SENSORS_TAG = "sensors";
 
@@ -54,6 +56,8 @@ static char          json[100];
 static char          measurements[50];
 float                temperature = 0.0;
 float                humidity    = 0.0;
+
+uint8_t adjust_offset;
 
 bool is_my_turn  = false;
 bool player_is_X = false;
@@ -100,9 +104,8 @@ void insertAfterSubstring(char *str, const char *substring, const char *insertSt
         // Insert the new string
         strncpy(str + insertPos, insertStr, strlen(insertStr));
 
-        pos = strstr(str, "device");
-        insertPos = pos - str + 6 -1;
-
+        pos       = strstr(str, "device");
+        insertPos = pos - str + 6 - 1;
     }
     else
     {
@@ -110,12 +113,16 @@ void insertAfterSubstring(char *str, const char *substring, const char *insertSt
     }
 }
 
-void replaceWord(char *str, const char *oldWord, const char *newWord) {
+void replaceWord(char *str, const char *oldWord, const char *newWord)
+{
     char *pos = strstr(str, oldWord); // Find the position of the old word
-    if (pos != NULL) {
-        int wordLen = strlen(oldWord); // Length of the old word
+    if(pos != NULL)
+    {
+        int wordLen = strlen(oldWord);  // Length of the old word
         strncpy(pos, newWord, wordLen); // Copy new word over old word
-    } else {
+    }
+    else
+    {
         printf("Old word not found.\n");
     }
 }
@@ -127,6 +134,7 @@ void wifi_on_status_change_callback(wifi_connection_status_t new_status)
     {
         lv_label_set_text(ui_WifiAvailability, "WIFI CONNECTED");
         printf("con\n");
+        led_on(LED_GREEN);
 
         b_is_provisioning = false;
         /* when connected, init the telemetry  and start the timer */
@@ -145,6 +153,8 @@ void wifi_on_status_change_callback(wifi_connection_status_t new_status)
     {
         lv_label_set_text(ui_WifiAvailability, "CONNECTION FAILED");
         printf("con fail\n");
+                led_off(LED_GREEN);
+
 
         b_is_provisioning = false;
     }
@@ -225,12 +235,20 @@ void start_provision(lv_event_t *e)
         b_is_provisioning = true;
         wifi_provision(WIFI_PROV_METHOD_BLE);
         lv_label_set_text(ui_WifiAvailability, "WIFI PROVISIONING");
+                led_on(LED_RED);
+                led_off(LED_GREEN);
+
+
     }
     else
     {
         wifi_provision_stop();
         b_is_provisioning = false;
         lv_label_set_text(ui_WifiAvailability, "PROV CANCELED");
+                led_off(LED_RED);
+                        led_off(LED_GREEN);
+
+
     }
 }
 
@@ -248,14 +266,20 @@ void ui_events_is_wifi_available(lv_event_t *e)
     if(true == wifi_is_wifi_connected())
     {
         lv_label_set_text(ui_WifiAvailability, "WIFI CONNECTED");
+                led_on(LED_GREEN);
+
     }
     else if(WIFI_OK != wifi_is_provisioned(&b_is_provisioned) || (false == b_is_provisioned))
     {
         lv_label_set_text(ui_WifiAvailability, "WIFI NOT AVAILABLE");
+                led_off(LED_GREEN);
+
     }
     else
     {
         lv_label_set_text(ui_WifiAvailability, "WIFI AVAILABLE");
+                led_off(LED_GREEN);
+
     }
 }
 
@@ -304,12 +328,16 @@ static void _telemetry_server_callback(const char *p_msg)
 {
 
     game_move_event_t event;
+    memset(msg, 0, 100);
     strncpy(msg, p_msg, 99);
     msg[99] = '\0';
 
     printf("stigla poruka: %s\n", msg);
+    printf("stigla p_msg: %s\n", p_msg);
+    printf("%c\n", msg[99]);
 
-    const char *start = strstr(p_msg, "]");
+
+    const char *start = strstr(msg, "]");
 
     int x = -1;
     // event.event_type = KRAKEN_MOVE_EVENT;
@@ -323,7 +351,7 @@ static void _telemetry_server_callback(const char *p_msg)
             event.posX = x;
         }
     }
-    start = strstr(p_msg + 22, "]");
+    start = strstr(msg + JSON_OFFSET - adjust_offset, "]");
     x     = -1;
 
     // event.event_type = KRAKEN_MOVE_EVENT;
@@ -338,16 +366,16 @@ static void _telemetry_server_callback(const char *p_msg)
         }
     }
 
-    start = strstr(p_msg + 22, "turn\":");
+    start = strstr(msg + JSON_OFFSET - adjust_offset, "turn");
 
-    if(start != NULL)
+    if((start != NULL) && (p_game->state == GAME_IN_PROGRESS))
     {
         char turn[6 + 1];
-        strncpy(turn, start + 7, 6);
+        strncpy(turn, start + 8, 6);
         turn[6] = '\0';
         printf("%s\n", turn);
         if((strncmp(turn, "device", 7) == 0))
-        {   
+        {
             printf("Server govori da je nas red\n");
             // _ui_send_event_to_game_engine(event);
             if(player_is_X)
@@ -446,15 +474,14 @@ static void _telemetry_server_callback(const char *p_msg)
                 }
             }
             is_my_turn = true;
+            lv_label_set_text(ui_Label6, "Your turn!");
 
             replaceWord(msg, "device", "server");
-
 
             if(check_if_end(p_game))
             {
                 p_game->state = GAME_LOST;
                 lv_label_set_text(ui_Label6, "GAME LOST :(");
-
             }
         }
     }
@@ -555,14 +582,16 @@ void poz0callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak0, "O");
         p_game->board.pos[0] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "0");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "0");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",0");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",0");
         }
     }
 
@@ -571,10 +600,11 @@ void poz0callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
 
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz1callback(lv_event_t *e)
@@ -595,14 +625,16 @@ void poz1callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak1, "O");
         p_game->board.pos[1] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "1");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "1");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",1");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",1");
         }
     }
 
@@ -610,9 +642,10 @@ void poz1callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz2callback(lv_event_t *e)
@@ -633,14 +666,16 @@ void poz2callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak2, "O");
         p_game->board.pos[2] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "2");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "2");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",2");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",2");
         }
     }
 
@@ -648,9 +683,10 @@ void poz2callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz3callback(lv_event_t *e)
@@ -671,24 +707,27 @@ void poz3callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak3, "O");
         p_game->board.pos[3] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "3");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "3");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",3");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",3");
         }
     }
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     telemetry_send("WES/Neptune/game", msg);
 
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz4callback(lv_event_t *e)
@@ -709,14 +748,16 @@ void poz4callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak4, "O");
         p_game->board.pos[4] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "4");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "4");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",4");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",4");
         }
     }
 
@@ -724,9 +765,10 @@ void poz4callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz5callback(lv_event_t *e)
@@ -747,14 +789,16 @@ void poz5callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak5, "O");
         p_game->board.pos[5] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "5");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "5");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",5");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",5");
         }
     }
 
@@ -762,9 +806,10 @@ void poz5callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz6callback(lv_event_t *e)
@@ -784,15 +829,19 @@ void poz6callback(lv_event_t *e)
     else
     {
         lv_label_set_text(ui_znak6, "O");
+        printf("napisao O\n");
         p_game->board.pos[6] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+        char *pos            = strstr(msg + JSON_OFFSET - adjust_offset, "]");
+        printf("napisao O\n");
+
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "6");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "6");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",6");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",6");
         }
     }
 
@@ -800,10 +849,10 @@ void poz6callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
-        
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz7callback(lv_event_t *e)
@@ -824,14 +873,16 @@ void poz7callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak7, "O");
         p_game->board.pos[7] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "7");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "7");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",7");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",7");
         }
     }
 
@@ -839,9 +890,10 @@ void poz7callback(lv_event_t *e)
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void poz8callback(lv_event_t *e)
@@ -862,25 +914,29 @@ void poz8callback(lv_event_t *e)
     {
         lv_label_set_text(ui_znak8, "O");
         p_game->board.pos[8] = 0;
-        char *pos            = strstr(msg + 22, "]");
+        adjust_offset        = (strlen(msg) > 50) ? 0 : 6;
+
+        char *pos = strstr(msg + JSON_OFFSET - adjust_offset, "]");
         if(*(pos - 1) == '[')
         {
-            insertAfterSubstring(msg + 22, "]", "8");
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", "8");
         }
         else
         {
-            insertAfterSubstring(msg + 22, "]", ",8");
+
+            insertAfterSubstring(msg + JSON_OFFSET - adjust_offset, "]", ",8");
         }
     }
     if(check_if_end(p_game))
     {
         p_game->state = GAME_WIN;
-        lv_label_set_text(ui_Label6, "GAME WON!!");
+        lv_label_set_text(ui_Label6, "GAME WON!!"); return;
     }
     telemetry_send("WES/Neptune/game", msg);
     printf("%s %d\n", msg, strlen(msg));
 
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
 }
 
 void exit_game(lv_event_t *e)
@@ -891,7 +947,8 @@ void exit_game(lv_event_t *e)
     _exit_game();
 }
 
-void _exit_game() {
+void _exit_game()
+{
     game_delete(p_game);
     p_game = NULL;
     lv_label_set_text(ui_znak0, "");
@@ -903,27 +960,30 @@ void _exit_game() {
     lv_label_set_text(ui_znak6, "");
     lv_label_set_text(ui_znak7, "");
     lv_label_set_text(ui_znak8, "");
+    memset(msg, '\0', 100);
 }
 
 void challenge(lv_event_t *e)
 {
     // Your code here
-    if(!wifi_is_wifi_connected())
+    if(!wifi_is_wifi_connected() || p_game != NULL)
         return;
 
     p_game = game_new();
     game_start(p_game);
+    p_game->state = GAME_IN_PROGRESS;
 
     snprintf(msg,
              sizeof(msg),
              "{"
-             "\"indexX\":[],"
-             "\"indexO\":[],"
-             "\"turn\":\"server\""
+             "\"indexX\": [], "
+             "\"indexO\": [], "
+             "\"turn\": \"server\""
              "}");
-
 
     telemetry_send("WES/Neptune/game", msg);
 
     is_my_turn = false;
+    lv_label_set_text(ui_Label6, "Wait for your turn...");
+
 }
