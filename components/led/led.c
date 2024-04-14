@@ -105,6 +105,9 @@ static void _led_reset_main_timer(led_name_t led);
  * @param led - an instance of an enum led name
  */
 static void _led_reset_blink_timer(led_name_t led);
+
+static void _led_custom_pattern_cb(TimerHandle_t time_handle);
+static void _period_timer_cb(TimerHandle_t time_handle);
 //------------------------- STATIC DATA & CONSTANTS ---------------------------
 static _led_config_t _led_info[LED_COUNT] = {
     // GPIO LEDS
@@ -132,6 +135,9 @@ static _led_config_t _led_info[LED_COUNT] = {
       .p_timer_hndl              = NULL,
       .p_blink_timer_hndl        = NULL },
 };
+
+uint8_t LED_on_state_ms 10;
+TimerHandle_t period_timer;
 //------------------------------- GLOBAL DATA ---------------------------------
 //------------------------------ PUBLIC FUNCTIONS -----------------------------
 led_err_t led_init(led_name_t led)
@@ -204,7 +210,6 @@ led_err_t led_pattern_run(led_name_t led, led_pattern_t led_pattern, uint32_t ti
         case LED_PATTERN_FASTBLINK:
             _led_blink_pattern_case(led, led_pattern, timeout_ms);
             break;
-
         default:
             break;
     }
@@ -223,6 +228,21 @@ led_err_t led_pattern_reset(led_name_t led)
     _led_none_pattern_case(led);
 
     return LED_ERR_NONE;
+}
+
+void led_custom_pattern(led_name_t led, uint32_t _period_ms)
+{
+
+    _led_info[led].p_blink_timer_hndl  = xTimerCreate("LED Custom Timer", (100 / portTICK_PERIOD_MS), pdTRUE, (void *)led, _led_custom_pattern_cb);
+    if (_led_info[led].p_blink_timer_hndl == NULL) {
+        printf("Failed to create LED timer\n");
+    }
+
+    period_timer = xTimerCreate("LED Timer", (_period_ms / portTICK_PERIOD_MS), pdFALSE, (void *)led, _period_timer_cb);
+    if (period_timer == NULL) {
+        printf("Failed to create LED timer\n");
+    }
+
 }
 
 //---------------------------- PRIVATE FUNCTIONS ------------------------------
@@ -339,5 +359,30 @@ static void _led_blink_pattern_timer_cb(TimerHandle_t time_handle)
         led_gpio_on(_led_info[led].p_led);
         _led_info[led].b_is_on = true;
     }
+}
+
+static void _period_timer_cb(TimerHandle_t time_handle)
+{
+    led_name_t led = (led_name_t)pvTimerGetTimerID(time_handle);
+    xTimerStop(_led_info[led].p_blink_timer_hndl,0);
+}
+
+static void _led_custom_pattern_cb(TimerHandle_t time_handle)
+{
+    led_name_t led = (led_name_t)pvTimerGetTimerID(time_handle);
+    if(LED_on_state_ms >= 2)
+    {
+        led_gpio_on(_led_info[led].p_led);
+        _led_info[led].b_is_on = true;
+        LED_on_state_ms--;
+    }
+    else
+    {
+        led_gpio_off(_led_info[led].p_led);
+        _led_info[led].b_is_on = false;
+        if(LED_on_state_ms == 0) LED_on_state_ms = 10;
+        else LED_on_state_ms--;
+    }
+    
 }
 //---------------------------- INTERRUPT HANDLERS -----------------------------

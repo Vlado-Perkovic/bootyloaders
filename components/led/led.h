@@ -119,6 +119,8 @@ led_err_t led_on(led_name_t led);
  * @return esp_err_t ESP_OK on success, fail otherwise.
  */
 led_err_t led_off(led_name_t led);
+
+led_err_t led_custom_pattern(led_name_t led, uint32_t ON_state_ms);
 #ifdef __cplusplus
 }
 #endif
