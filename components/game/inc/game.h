@@ -22,6 +22,8 @@ extern "C" {
 #include <freertos/timers.h>
 #include <freertos/semphr.h>
 
+#include "board.h"
+
 //---------------------------------- MACROS -----------------------------------
 
 //-------------------------------- DATA TYPES ---------------------------------
@@ -54,6 +56,7 @@ typedef enum
 struct _game_t
 {
    board_t board;
+   game_state_t state;
 };
 
 typedef enum
@@ -65,7 +68,8 @@ typedef enum
 typedef struct
 {
     game_event_t evt;
-    uint8_t pos;
+    uint8_t posX;
+    uint8_t posO;
 } game_move_event_t;
 
 
@@ -86,7 +90,9 @@ game_t *game_new();
  */
 void game_start(game_t *p_self);
 
-void check_if_end(game_t *p_self);
+bool check_if_end(game_t *p_self);
+
+bool check_if_draw(game_t *p_self);
 
 /**
  * @brief function destructor for game engine object

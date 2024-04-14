@@ -38,7 +38,7 @@ typedef struct _board_t board_t;
 
 struct _board_t
 {
-    uint8_t            pos[9];
+    int8_t            pos[9];
 };
 
 //---------------------- PUBLIC FUNCTION PROTOTYPES --------------------------

@@ -10,57 +10,94 @@
 extern "C" {
 #endif
 
-#include "lvgl.h"
+    #include "lvgl.h"
 
 #include "ui_helpers.h"
 #include "ui_events.h"
 
 // SCREEN: ui_IntroScreen
 void ui_IntroScreen_screen_init(void);
-extern lv_obj_t * ui_IntroScreen;
-void ui_event_ReadMeasurements(lv_event_t * e);
-extern lv_obj_t * ui_ReadMeasurements;
-void ui_event_Challenge(lv_event_t * e);
-extern lv_obj_t * ui_Challenge;
-void ui_event_WifiSettings(lv_event_t * e);
-extern lv_obj_t * ui_WifiSettings;
-extern lv_obj_t * ui_Wifi_Settings;
-extern lv_obj_t * ui_Station_Sensors;
-extern lv_obj_t * ui_Fight_an_Alien;
-extern lv_obj_t * ui_Label9;
+extern lv_obj_t *ui_IntroScreen;
+extern lv_obj_t *ui_Image1;
+void ui_event_Challenge( lv_event_t * e);
+extern lv_obj_t *ui_Challenge;
+extern lv_obj_t *ui_Fight_an_Alien;
+void ui_event_WifiSettings( lv_event_t * e);
+extern lv_obj_t *ui_WifiSettings;
+extern lv_obj_t *ui_Wifi_Settings;
+void ui_event_Button2( lv_event_t * e);
+extern lv_obj_t *ui_Button2;
+extern lv_obj_t *ui_Station_Sensors;
 // SCREEN: ui_WifiScreen
 void ui_WifiScreen_screen_init(void);
-void ui_event_WifiScreen(lv_event_t * e);
-extern lv_obj_t * ui_WifiScreen;
-void ui_event_Button8(lv_event_t * e);
-extern lv_obj_t * ui_Button8;
-void ui_event_WifiConnectButton(lv_event_t * e);
-extern lv_obj_t * ui_WifiConnectButton;
-void ui_event_BackHome(lv_event_t * e);
-extern lv_obj_t * ui_BackHome;
-extern lv_obj_t * ui_BackFromWifi;
-extern lv_obj_t * ui_WIfiAvailability;
-extern lv_obj_t * ui_WifiAvailability;
-// SCREEN: ui_MeasurementsScreen
-void ui_MeasurementsScreen_screen_init(void);
-extern lv_obj_t * ui_MeasurementsScreen;
-extern lv_obj_t * ui_TempSensing;
-extern lv_obj_t * ui_HumSensing;
-extern lv_obj_t * ui_AccSensing;
-extern lv_obj_t * ui_T;
-extern lv_obj_t * ui_H;
-extern lv_obj_t * ui_Acc;
-void ui_event_BackToHome(lv_event_t * e);
-extern lv_obj_t * ui_BackToHome;
-void ui_event_Back(lv_event_t * e);
-extern lv_obj_t * ui_Back;
+void ui_event_WifiScreen( lv_event_t * e);
+extern lv_obj_t *ui_WifiScreen;
+void ui_event_Button8( lv_event_t * e);
+extern lv_obj_t *ui_Button8;
+extern lv_obj_t *ui_ProvisionLabel;
+void ui_event_WifiConnectButton( lv_event_t * e);
+extern lv_obj_t *ui_WifiConnectButton;
+extern lv_obj_t *ui_ConnectToWifiLabel;
+void ui_event_BackHome( lv_event_t * e);
+extern lv_obj_t *ui_BackHome;
+extern lv_obj_t *ui_BackFromWifi;
+extern lv_obj_t *ui_WIfiAvailability;
+extern lv_obj_t *ui_WifiAvailability;
 // SCREEN: ui_AlienTicTacToe
 void ui_AlienTicTacToe_screen_init(void);
-extern lv_obj_t * ui_AlienTicTacToe;
-void ui_event_Button13(lv_event_t * e);
-extern lv_obj_t * ui_Button13;
-void ui_event____initial_actions0(lv_event_t * e);
-extern lv_obj_t * ui____initial_actions0;
+extern lv_obj_t *ui_AlienTicTacToe;
+void ui_event_Button13( lv_event_t * e);
+extern lv_obj_t *ui_Button13;
+extern lv_obj_t *ui_Panel1;
+extern lv_obj_t *ui_Panel2;
+extern lv_obj_t *ui_Panel3;
+extern lv_obj_t *ui_Panel4;
+void ui_event_poz0( lv_event_t * e);
+extern lv_obj_t *ui_poz0;
+extern lv_obj_t *ui_znak0;
+void ui_event_poz1( lv_event_t * e);
+extern lv_obj_t *ui_poz1;
+extern lv_obj_t *ui_znak1;
+void ui_event_poz2( lv_event_t * e);
+extern lv_obj_t *ui_poz2;
+extern lv_obj_t *ui_znak2;
+void ui_event_poz3( lv_event_t * e);
+extern lv_obj_t *ui_poz3;
+extern lv_obj_t *ui_znak3;
+void ui_event_poz4( lv_event_t * e);
+extern lv_obj_t *ui_poz4;
+extern lv_obj_t *ui_znak4;
+void ui_event_poz5( lv_event_t * e);
+extern lv_obj_t *ui_poz5;
+extern lv_obj_t *ui_znak5;
+void ui_event_poz6( lv_event_t * e);
+extern lv_obj_t *ui_poz6;
+extern lv_obj_t *ui_znak6;
+void ui_event_poz7( lv_event_t * e);
+extern lv_obj_t *ui_poz7;
+extern lv_obj_t *ui_znak7;
+void ui_event_poz8( lv_event_t * e);
+extern lv_obj_t *ui_poz8;
+extern lv_obj_t *ui_znak8;
+extern lv_obj_t *ui_Label6;
+// SCREEN: ui_MeasurementsScreen
+void ui_MeasurementsScreen_screen_init(void);
+extern lv_obj_t *ui_MeasurementsScreen;
+void ui_event_BackFromSensor( lv_event_t * e);
+extern lv_obj_t *ui_BackFromSensor;
+extern lv_obj_t *ui_backFromSensorLab;
+extern lv_obj_t *ui_tempPanel;
+extern lv_obj_t *ui_tempLabel;
+extern lv_obj_t *ui_humidPanel;
+extern lv_obj_t *ui_humidLabel;
+extern lv_obj_t *ui_accPanel;
+extern lv_obj_t *ui_accLabel;
+void ui_event____initial_actions0( lv_event_t * e);
+extern lv_obj_t *ui____initial_actions0;
+
+LV_IMG_DECLARE( ui_img_1159460666);   // assets/neptune (1).png
+
+
 
 
 void ui_init(void);

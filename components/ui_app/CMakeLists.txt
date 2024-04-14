@@ -6,8 +6,10 @@ idf_component_register(SRCS
 "squareline/components/ui_comp_hook.c"
 "squareline/screens/ui_IntroScreen.c"
 "squareline/screens/ui_AlienTicTacToe.c"
-"squareline/screens/ui_MeasurementsScreen.c"
 "squareline/screens/ui_WifiScreen.c"
+"squareline/screens/ui_MeasurementsScreen.c"
+"squareline/images/ui_img_1159460666.c"
+
 INCLUDE_DIRS "" "squareline" "squareline/components"
 REQUIRES lvgl lvgl_esp32_drivers wifi game led button joystick telemetry sensor)
 

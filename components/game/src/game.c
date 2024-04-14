@@ -60,7 +60,7 @@ static TaskHandle_t      p_task_game_loop_hndl = NULL;
 // static TimerHandle_t     p_game_loop_timer     = NULL;
 
 //------------------------------- GLOBAL DATA ---------------------------------
-QueueHandle_t p_game_event_t_queue     = NULL;
+QueueHandle_t p_game_event_queue     = NULL;
 // QueueHandle_t p_map_queue            = NULL;
 QueueHandle_t p_game_state_queue     = NULL;
 volatile bool b_is_movement_permited = false;
@@ -108,28 +108,52 @@ void game_start(game_t *p_self)
             printf("task creation failed.\n");
         }
     }
+
+    p_self->state = GAME_IN_PROGRESS;
 }
 
-void check_if_end(game_t *p_self) {
+bool check_if_end(game_t *p_self) {
     // check if three in a row
-
-    uint8_t *board = &p_self->pos;
 
     // Check rows and columns
     for (int i = 0; i < 3; i++) {
-        if ((board[i][0] == 1 && board[i][1] == 1 && board[i][2] == 1) ||
-            (board[0][i] == 1 && board[1][i] == 1 && board[2][i] == 1)) {
+        if ((p_self->board.pos[i + 3 * 0] == 1 && p_self->board.pos[i + 3 * 1] == 1 && p_self->board.pos[i + 3 * 2] == 1) ||
+            (p_self->board.pos[0 + 3 * i] == 1 && p_self->board.pos[1 + 3 * i] == 1 && p_self->board.pos[2 + 3 * i] == 1)) {
+            printf("ravno\n");
+            return true;
+        }
+
+        if ((p_self->board.pos[i + 3 * 0] == 0 && p_self->board.pos[i + 3 * 1] == 0 && p_self->board.pos[i + 3 * 2] == 0) ||
+            (p_self->board.pos[0 + 3 * i] == 0 && p_self->board.pos[1 + 3 * i] == 0 && p_self->board.pos[2 + 3 * i] == 0)) {
+            printf("ravno\n");
             return true;
         }
     }
-    // Check diagonals
-    if ((board[0][0] == 1 && board[1][1] == 1 && board[2][2] == 1) ||
-        (board[0][2] == 1 && board[1][1] == 1 && board[2][0] == 1)) {
+    
+    if ((p_self->board.pos[0] == 1 && p_self->board.pos[4] == 1 && p_self->board.pos[8] == 1) ||
+        (p_self->board.pos[2] == 1 && p_self->board.pos[4] == 1 && p_self->board.pos[6] == 1)) {
+        printf("dijagonala\n");
         return true;
     }
+
+    if ((p_self->board.pos[0] == 0 && p_self->board.pos[4] == 0 && p_self->board.pos[8] == 0) ||
+        (p_self->board.pos[2] == 0 && p_self->board.pos[4] == 0 && p_self->board.pos[6] == 0)) {
+        printf("dijagonala\n");
+        return true;
+    }
+    
+    printf("nope\n");
     return false;
 
 }
+
+bool check_if_draw(game_t *p_self) {
+    for (int i = 0; i < 9; i++) {
+        if (p_self->board.pos[i] == -1) return false;
+    }
+    return !check_if_end(p_self);
+}
+
 
 
 void game_delete(game_t *p_self)
@@ -146,8 +170,8 @@ void game_delete(game_t *p_self)
     // xTimerStop(p_game_loop_timer, 0);
     // xTimerDelete(p_game_loop_timer, 0);
     // p_game_loop_timer = NULL;
-    vQueueDelete(p_game_event_t_queue);
-    p_game_event_t_queue = NULL;
+    vQueueDelete(p_game_event_queue);
+    p_game_event_queue = NULL;
     // vQueueDelete(p_map_queue);
     // p_map_queue = NULL;
     vQueueDelete(p_game_state_queue);
@@ -166,10 +190,10 @@ bool _game_init(game_t *p_self)
 
     /* create a queue for the communication with the UI component */
 
-    p_game_event_t_queue = xQueueCreate(GAME_EVENT_T_QUEUE_LEN, sizeof(game_event_t));
+    p_game_event_queue = xQueueCreate(GAME_EVENT_T_QUEUE_LEN, sizeof(game_move_event_t));
 
     // Check if queue game_event_t is created successfully.
-    if(NULL == p_game_event_t_queue)
+    if(NULL == p_game_event_queue)
     {
         printf("Queue error handler.\n");
         b_is_valid_init = false;
@@ -212,6 +236,8 @@ bool _game_init(game_t *p_self)
     //         b_is_valid_init = false;
     //     }
     // }
+
+    board_init(&p_self->board);
     return b_is_valid_init;
 }
 
@@ -219,27 +245,22 @@ void _game_loop_task(void *p_argument)
 {
 
     game_t *p_self = (game_t *)p_argument;
-    b_is_net_thrown       = false;
 
     for(;;)
     {
-        game_event_t event;
+        game_move_event_t event;
 
-        if(xQueueReceive(p_game_event_t_queue, &event, 500) == pdPASS)
+        if(xQueueReceive(p_game_event_queue, &event, 500) == pdPASS)
         {
             // Process the incoming user input event
-            switch(event.event_type)
-            {
-                case X_EVENT:
-                    printf("X\n");
-                    break;
+            
+            p_self->board.pos[event.posX] = 1;
+            p_self->board.pos[event.posO] = 0;
 
-                case O_EVENT:
-                    printf("O\n");
-                    break;
-            }
             // check end
+            check_if_end(p_self);
         }
+
 
         // vTaskDelay(10 / portTICK_PERIOD_MS);
     }

@@ -31,7 +31,7 @@
 
 //---------------------------------- MACROS -----------------------------------
 #define BROKER     "mqtt://4gpc.l.time4vps.cloud"
-#define TOPIC      ""
+#define TOPIC      "WES/Neptune/game"
 #define TOPIC_SEND "WES/Neptune/sensors"
 //-------------------------------- DATA TYPES ---------------------------------
 
@@ -110,6 +110,25 @@ static esp_err_t _telemetry_driver_connection_status_update(const char *p_msg)
 
     return err;
 }
+
+esp_err_t telemetry_driver_send(const char* topic, const char *p_msg) {
+    esp_err_t err = ESP_OK;
+
+    int msg_id = esp_mqtt_client_publish(p_client, topic, p_msg, 0, 0, 0);
+    if(0 > msg_id)
+    {
+        ESP_LOGI(TAG, "sent publish failed, msg_id=%d", msg_id);
+
+        err = ESP_FAIL;
+    }
+    if(ESP_OK == err)
+    {
+        ESP_LOGI(TAG, "sent publish successful, msg_id=%d", msg_id);
+    }
+
+    return err;
+}
+
 
 static void _mqtt_event_handler(void *handler_args, esp_event_base_t base, int32_t event_id, void *event_data)
 {

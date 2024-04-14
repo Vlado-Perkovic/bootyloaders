@@ -7,87 +7,77 @@
 
 void ui_MeasurementsScreen_screen_init(void)
 {
-    ui_MeasurementsScreen = lv_obj_create(NULL);
-    lv_obj_clear_flag(ui_MeasurementsScreen, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+ui_MeasurementsScreen = lv_obj_create(NULL);
+lv_obj_clear_flag( ui_MeasurementsScreen, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_bg_color(ui_MeasurementsScreen, lv_color_hex(0x0F7AC0), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_MeasurementsScreen, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-    ui_TempSensing = lv_obj_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_TempSensing, 82);
-    lv_obj_set_height(ui_TempSensing, 41);
-    lv_obj_set_x(ui_TempSensing, -103);
-    lv_obj_set_y(ui_TempSensing, -8);
-    lv_obj_set_align(ui_TempSensing, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_TempSensing, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+ui_BackFromSensor = lv_btn_create(ui_MeasurementsScreen);
+lv_obj_set_width( ui_BackFromSensor, 90);
+lv_obj_set_height( ui_BackFromSensor, 35);
+lv_obj_set_x( ui_BackFromSensor, -110 );
+lv_obj_set_y( ui_BackFromSensor, -94 );
+lv_obj_set_align( ui_BackFromSensor, LV_ALIGN_CENTER );
+lv_obj_set_flex_flow(ui_BackFromSensor,LV_FLEX_FLOW_ROW);
+lv_obj_set_flex_align(ui_BackFromSensor, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
+lv_obj_add_flag( ui_BackFromSensor, LV_OBJ_FLAG_SCROLL_ON_FOCUS );   /// Flags
+lv_obj_clear_flag( ui_BackFromSensor, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+lv_obj_set_style_bg_color(ui_BackFromSensor, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_bg_opa(ui_BackFromSensor, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-    ui_HumSensing = lv_obj_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_HumSensing, 85);
-    lv_obj_set_height(ui_HumSensing, 42);
-    lv_obj_set_x(ui_HumSensing, -2);
-    lv_obj_set_y(ui_HumSensing, -7);
-    lv_obj_set_align(ui_HumSensing, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_HumSensing, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+ui_backFromSensorLab = lv_label_create(ui_BackFromSensor);
+lv_obj_set_width( ui_backFromSensorLab, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_backFromSensorLab, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_x( ui_backFromSensorLab, 95 );
+lv_obj_set_y( ui_backFromSensorLab, -97 );
+lv_obj_set_align( ui_backFromSensorLab, LV_ALIGN_CENTER );
+lv_label_set_text(ui_backFromSensorLab,"<  Back");
+lv_obj_set_style_text_color(ui_backFromSensorLab, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT );
+lv_obj_set_style_text_opa(ui_backFromSensorLab, 255, LV_PART_MAIN| LV_STATE_DEFAULT);
+lv_obj_set_style_text_font(ui_backFromSensorLab, &lv_font_montserrat_14, LV_PART_MAIN| LV_STATE_DEFAULT);
 
-    ui_AccSensing = lv_obj_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_AccSensing, 89);
-    lv_obj_set_height(ui_AccSensing, 72);
-    lv_obj_set_x(ui_AccSensing, 101);
-    lv_obj_set_y(ui_AccSensing, 7);
-    lv_obj_set_align(ui_AccSensing, LV_ALIGN_CENTER);
-    lv_obj_clear_flag(ui_AccSensing, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+ui_tempPanel = lv_obj_create(ui_MeasurementsScreen);
+lv_obj_set_width( ui_tempPanel, 80);
+lv_obj_set_height( ui_tempPanel, 40);
+lv_obj_set_x( ui_tempPanel, -105 );
+lv_obj_set_y( ui_tempPanel, 7 );
+lv_obj_set_align( ui_tempPanel, LV_ALIGN_CENTER );
+lv_obj_clear_flag( ui_tempPanel, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
-    ui_T = lv_label_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_T, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_T, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_T, -103);
-    lv_obj_set_y(ui_T, -38);
-    lv_obj_set_align(ui_T, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_T, "Temperature:");
-    lv_obj_set_style_text_color(ui_T, lv_color_hex(0xF8F8F8), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_T, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_tempLabel = lv_label_create(ui_tempPanel);
+lv_obj_set_width( ui_tempLabel, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_tempLabel, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_tempLabel, LV_ALIGN_CENTER );
+lv_label_set_text(ui_tempLabel,"");
 
-    ui_H = lv_label_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_H, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_H, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_H, -3);
-    lv_obj_set_y(ui_H, -38);
-    lv_obj_set_align(ui_H, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_H, "Humidity:");
-    lv_obj_set_style_text_color(ui_H, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_H, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_humidPanel = lv_obj_create(ui_MeasurementsScreen);
+lv_obj_set_width( ui_humidPanel, 80);
+lv_obj_set_height( ui_humidPanel, 70);
+lv_obj_set_x( ui_humidPanel, 89 );
+lv_obj_set_y( ui_humidPanel, 21 );
+lv_obj_set_align( ui_humidPanel, LV_ALIGN_CENTER );
+lv_obj_clear_flag( ui_humidPanel, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
-    ui_Acc = lv_label_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_Acc, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Acc, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Acc, 102);
-    lv_obj_set_y(ui_Acc, -39);
-    lv_obj_set_align(ui_Acc, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Acc, "Accelerometer:");
-    lv_obj_set_style_text_color(ui_Acc, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Acc, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_humidLabel = lv_label_create(ui_humidPanel);
+lv_obj_set_width( ui_humidLabel, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_humidLabel, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_humidLabel, LV_ALIGN_CENTER );
+lv_label_set_text(ui_humidLabel,"");
 
-    ui_BackToHome = lv_btn_create(ui_MeasurementsScreen);
-    lv_obj_set_width(ui_BackToHome, 94);
-    lv_obj_set_height(ui_BackToHome, 37);
-    lv_obj_set_x(ui_BackToHome, -116);
-    lv_obj_set_y(ui_BackToHome, -101);
-    lv_obj_set_align(ui_BackToHome, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_BackToHome, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_BackToHome, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_color(ui_BackToHome, lv_color_hex(0x6B696F), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_bg_opa(ui_BackToHome, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_color(ui_BackToHome, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_BackToHome, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_accPanel = lv_obj_create(ui_MeasurementsScreen);
+lv_obj_set_width( ui_accPanel, 80);
+lv_obj_set_height( ui_accPanel, 40);
+lv_obj_set_x( ui_accPanel, -9 );
+lv_obj_set_y( ui_accPanel, 7 );
+lv_obj_set_align( ui_accPanel, LV_ALIGN_CENTER );
+lv_obj_clear_flag( ui_accPanel, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 
-    ui_Back = lv_label_create(ui_BackToHome);
-    lv_obj_set_width(ui_Back, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Back, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Back, -4);
-    lv_obj_set_y(ui_Back, 2);
-    lv_obj_set_align(ui_Back, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Back, "<   Back");
-    lv_obj_set_style_text_color(ui_Back, lv_color_hex(0xFFFFFF), LV_PART_MAIN | LV_STATE_DEFAULT);
-    lv_obj_set_style_text_opa(ui_Back, 255, LV_PART_MAIN | LV_STATE_DEFAULT);
+ui_accLabel = lv_label_create(ui_accPanel);
+lv_obj_set_width( ui_accLabel, LV_SIZE_CONTENT);  /// 1
+lv_obj_set_height( ui_accLabel, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_align( ui_accLabel, LV_ALIGN_CENTER );
+lv_label_set_text(ui_accLabel,"");
 
-    lv_obj_add_event_cb(ui_Back, ui_event_Back, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_BackToHome, ui_event_BackToHome, LV_EVENT_ALL, NULL);
+lv_obj_add_event_cb(ui_BackFromSensor, ui_event_BackFromSensor, LV_EVENT_ALL, NULL);
 
 }

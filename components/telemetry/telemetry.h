@@ -45,6 +45,9 @@ telemetry_err_t telemetry_init(void);
 
 telemetry_err_t telemetry_connection_status_update(const char *p_msg);
 
+telemetry_err_t telemetry_send(const char *topic, const char *p_msg);
+
+
 /**
  * @brief function for registering callback functions
  *

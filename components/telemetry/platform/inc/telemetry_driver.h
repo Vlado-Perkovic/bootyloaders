@@ -42,6 +42,8 @@ esp_err_t telemetry_driver_init(void);
  */
 esp_err_t telemetry_driver_connection_status_update(const char *msg);
 
+esp_err_t telemetry_driver_send(const char* topic, const char *p_msg);
+
 /**
  * @brief function for registering callback functions
  *

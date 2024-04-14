@@ -11,10 +11,20 @@ extern "C" {
 #endif
 
 void ui_setup(lv_event_t * e);
-void btn1_clicked(lv_event_t * e);
+void challenge(lv_event_t * e);
 void ui_events_is_wifi_available(lv_event_t * e);
 void start_provision(lv_event_t * e);
 void connect_to_wifi(lv_event_t * e);
+void exit_game(lv_event_t * e);
+void poz0callback(lv_event_t * e);
+void poz1callback(lv_event_t * e);
+void poz2callback(lv_event_t * e);
+void poz3callback(lv_event_t * e);
+void poz4callback(lv_event_t * e);
+void poz5callback(lv_event_t * e);
+void poz6callback(lv_event_t * e);
+void poz7callback(lv_event_t * e);
+void poz8callback(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

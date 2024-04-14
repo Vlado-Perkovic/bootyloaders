@@ -43,6 +43,17 @@ telemetry_err_t telemetry_connection_status_update(const char *p_msg)
     return err;
 }
 
+telemetry_err_t telemetry_send(const char *topic, const char *p_msg)
+{
+    telemetry_err_t err = TELEMETRY_OK;
+
+    if(ESP_OK != telemetry_driver_send(topic, p_msg))
+    {
+        err = TELEMETRY_SEND_FAILED;
+    }
+    return err;
+}
+
 void telemetry_register_on_new_message(telemetry_on_new_message_cb_t p_cbk)
 {
     /* we allow NULL because it deregisters the callback */
