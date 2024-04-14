@@ -332,10 +332,7 @@ static void _telemetry_server_callback(const char *p_msg)
     strncpy(msg, p_msg, 99);
     msg[99] = '\0';
 
-    printf("stigla poruka: %s\n", msg);
-    printf("stigla p_msg: %s\n", p_msg);
-    printf("%c\n", msg[99]);
-
+    led_custom_pattern(LED_BLUE, 2000);
 
     const char *start = strstr(msg, "]");
 

@@ -136,7 +136,7 @@ static _led_config_t _led_info[LED_COUNT] = {
       .p_blink_timer_hndl        = NULL },
 };
 
-uint8_t LED_on_state_ms 10;
+uint8_t LED_on_state_ms = 10;
 TimerHandle_t period_timer;
 //------------------------------- GLOBAL DATA ---------------------------------
 //------------------------------ PUBLIC FUNCTIONS -----------------------------
@@ -242,6 +242,10 @@ void led_custom_pattern(led_name_t led, uint32_t _period_ms)
     if (period_timer == NULL) {
         printf("Failed to create LED timer\n");
     }
+
+
+    xTimerStart(_led_info[led].p_blink_timer_hndl, 0);
+    xTimerStart(period_timer, 0);
 
 }
 
@@ -365,6 +369,9 @@ static void _period_timer_cb(TimerHandle_t time_handle)
 {
     led_name_t led = (led_name_t)pvTimerGetTimerID(time_handle);
     xTimerStop(_led_info[led].p_blink_timer_hndl,0);
+        // xTimerDelete(_led_info[led].p_blink_timer_hndl,0);
+        // led_off(led);
+
 }
 
 static void _led_custom_pattern_cb(TimerHandle_t time_handle)
@@ -372,13 +379,13 @@ static void _led_custom_pattern_cb(TimerHandle_t time_handle)
     led_name_t led = (led_name_t)pvTimerGetTimerID(time_handle);
     if(LED_on_state_ms >= 2)
     {
-        led_gpio_on(_led_info[led].p_led);
+        led_on(led);
         _led_info[led].b_is_on = true;
         LED_on_state_ms--;
     }
     else
     {
-        led_gpio_off(_led_info[led].p_led);
+        led_off(led);
         _led_info[led].b_is_on = false;
         if(LED_on_state_ms == 0) LED_on_state_ms = 10;
         else LED_on_state_ms--;
